@@ -9,7 +9,7 @@ import { createWishlistRepository } from "../src/repositories/wishlistRepository
 
 loadEnv({ path: [".env", "../.env"], quiet: true });
 
-const databaseUrl = process.env.TEST_DATABASE_URL ?? process.env.DATABASE_URL;
+const databaseUrl = process.env.TEST_DATABASE_URL;
 const migrationsDir = fileURLToPath(new URL("../migrations", import.meta.url));
 
 const input: WishlistInput = {

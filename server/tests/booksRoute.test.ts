@@ -88,6 +88,18 @@ describe("GET /api/books", () => {
     expect(response.body.error.code).toBe("VALIDATION_ERROR");
   });
 
+  it("rejects a startIndex beyond the 1,000-result cap", async () => {
+    const search = vi.fn(async () => result);
+
+    const response = await request(buildApp({ search })).get(
+      "/api/books?q=dune&page=26&limit=40",
+    );
+
+    expect(response.status).toBe(400);
+    expect(response.body.error.details[0].path).toBe("page");
+    expect(search).not.toHaveBeenCalled();
+  });
+
   it("keeps the Google rate limit status and Retry-After header", async () => {
     const search = vi.fn(async () => {
       const { AppError } = await import("../src/lib/errors");

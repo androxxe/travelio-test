@@ -160,7 +160,15 @@ async function requestJson(
           "Could not reach Google Books. Try again.",
         );
       } else {
-        return await response.json();
+        try {
+          return await response.json();
+        } catch {
+          throw new AppError(
+            502,
+            "UPSTREAM_INVALID_RESPONSE",
+            "Google Books returned an unexpected response.",
+          );
+        }
       }
     } catch (error) {
       if (error instanceof AppError) {
@@ -213,7 +221,7 @@ export function createGoogleBooksClient({
     const cached = cache.get(cacheKey);
 
     if (cached && cached.expiresAt > Date.now()) {
-      return cached.value;
+      return { ...cached.value, query: q };
     }
 
     const url = new URL(baseUrl);
@@ -258,6 +266,7 @@ export function createGoogleBooksClient({
         limit,
         totalItems: parsed.data.totalItems ?? items.length,
         hasNextPage:
+          page < 50 &&
           rawItems.length === limit &&
           page * limit < (parsed.data.totalItems ?? 0),
         items,
@@ -280,6 +289,7 @@ export function createGoogleBooksClient({
     } catch (error) {
       if (
         fallbackCatalog &&
+        page === 1 &&
         error instanceof AppError &&
         (error.status === 429 || error.code.startsWith("UPSTREAM_"))
       ) {

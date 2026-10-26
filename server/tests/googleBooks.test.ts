@@ -153,6 +153,34 @@ describe("createGoogleBooksClient", () => {
     expect(result.items.some((book) => book.title === "Dune")).toBe(true);
   });
 
+  it("stops pagination at page 50", async () => {
+    const client = createGoogleBooksClient({
+      baseUrl: "https://example.test/volumes",
+      fetchImpl: async () =>
+        jsonResponse({
+          totalItems: 10_000,
+          items: Array.from({ length: 20 }, (_, index) => ({
+            ...volume,
+            id: `page-${index}`,
+          })),
+        }),
+    });
+
+    const result = await client.search({ q: "dune", page: 50, limit: 20 });
+    expect(result.hasNextPage).toBe(false);
+  });
+
+  it("does not mix fallback data into later pages", async () => {
+    const client = createGoogleBooksClient({
+      baseUrl: "https://example.test/volumes",
+      fetchImpl: async () => jsonResponse({}, { status: 429 }),
+    });
+
+    await expect(
+      client.search({ q: "dune", page: 2, limit: 20 }),
+    ).rejects.toMatchObject({ code: "UPSTREAM_RATE_LIMITED" });
+  });
+
   it("retries a 5xx once and then fails with 502", async () => {
     const fetchImpl = vi.fn<typeof fetch>(async () =>
       jsonResponse({}, { status: 503 }),

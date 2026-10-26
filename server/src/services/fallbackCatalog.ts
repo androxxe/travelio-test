@@ -10,7 +10,7 @@ import type { Book } from "../domain";
  * designed placeholder like any other broken thumbnail.
  */
 export const FALLBACK_NOTICE =
-  "Google Books is rate-limiting searches right now, so these results come from a small built-in demo catalog.";
+  "Google Books is unavailable right now, so these results come from a small built-in demo catalog.";
 
 function cover(isbn: string): string {
   return `https://covers.openlibrary.org/b/isbn/${isbn}-L.jpg`;

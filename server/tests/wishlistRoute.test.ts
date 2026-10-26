@@ -124,6 +124,16 @@ describe("wishlist API", () => {
       .post("/api/wishlist")
       .send({ ...payload, thumbnail: "not-a-url" });
     expect(badThumbnail.status).toBe(400);
+
+    const scriptScheme = await agent
+      .post("/api/wishlist")
+      .send({ ...payload, thumbnail: "javascript:alert(1)" });
+    expect(scriptScheme.status).toBe(400);
+
+    const controlCharacters = await agent
+      .post("/api/wishlist")
+      .send({ ...payload, title: "Dune\u0000" });
+    expect(controlCharacters.status).toBe(400);
   });
 
   it("rejects malformed JSON with a 400", async () => {
