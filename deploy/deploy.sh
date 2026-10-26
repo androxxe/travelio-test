@@ -35,7 +35,7 @@ REMOTE
 
 echo "==> waiting for ${PUBLIC_URL}/api/ready"
 for _ in $(seq 1 45); do
-  if curl -fsS "${PUBLIC_URL}/api/ready" >/dev/null; then
+  if curl -fsS --connect-timeout 3 --max-time 5 "${PUBLIC_URL}/api/ready" >/dev/null; then
     echo "==> ready"
     exit 0
   fi
