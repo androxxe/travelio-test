@@ -89,3 +89,16 @@ test("ignores a one-character query instead of calling the API", async ({
 
   expect(bookRequests).toBe(0);
 });
+
+test("the header Search link clears an active query", async ({ page }) => {
+  await page.goto("/?q=atomic%20habits");
+  await expect(page.getByRole("heading", { name: "“atomic habits”" })).toBeVisible();
+
+  await page.getByRole("link", { name: "Search", exact: true }).click();
+
+  await expect(
+    page.getByRole("searchbox", { name: "Search books" }),
+  ).toHaveValue("");
+  await page.waitForTimeout(700);
+  await expect(page).not.toHaveURL(/[?&]q=/);
+});

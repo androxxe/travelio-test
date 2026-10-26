@@ -1,6 +1,6 @@
 import { BookOpen, Info, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import { BookCard } from "@/components/BookCard";
 import { EmptyState } from "@/components/EmptyState";
 import { ErrorState } from "@/components/ErrorState";
@@ -18,19 +18,16 @@ const SKELETON_KEYS = Array.from({ length: 8 }, (_, index) => index);
 
 export function SearchPage() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
   const query = (searchParams.get("q") ?? "").trim();
   const [input, setInput] = useState(query);
 
-  // Keep the field in sync with browser back/forward without writing to state
-  // during render or directly inside an effect.
+  // Sync the field when the URL changes outside typing (back/forward or the
+  // header Search link). Timer callback keeps it out of the effect body.
   useEffect(() => {
-    function handlePopState() {
-      setInput(new URLSearchParams(window.location.search).get("q") ?? "");
-    }
-
-    window.addEventListener("popstate", handlePopState);
-    return () => window.removeEventListener("popstate", handlePopState);
-  }, []);
+    const timer = window.setTimeout(() => setInput(query), 0);
+    return () => window.clearTimeout(timer);
+  }, [location.key, query]);
 
   useEffect(() => {
     const trimmed = input.trim();
@@ -68,7 +65,13 @@ export function SearchPage() {
       window.requestAnimationFrame(() => {
         document
           .getElementById("results")
-          ?.scrollIntoView({ behavior: "smooth", block: "start" });
+          ?.scrollIntoView({
+            behavior: window.matchMedia("(prefers-reduced-motion: reduce)")
+              .matches
+              ? "auto"
+              : "smooth",
+            block: "start",
+          });
       });
     }
   }
@@ -84,7 +87,7 @@ export function SearchPage() {
   const hasQuery = query.length >= 2;
   const isFirstLoad = books.isPending && hasQuery;
   const isRefreshing = books.isFetching && !books.isFetchingNextPage;
-  const notice = books.data?.pages[0]?.notice ?? null;
+  const notice = books.notice;
 
   return (
     <>
@@ -136,7 +139,7 @@ export function SearchPage() {
               </div>
             )}
 
-            {books.isError ? (
+            {books.isError && books.books.length === 0 ? (
               <ErrorState
                 title="Search didn't go through"
                 message={
@@ -180,7 +183,27 @@ export function SearchPage() {
                   ))}
                 </div>
 
-                {books.hasNextPage && (
+                {books.isFetchNextPageError && (
+                  <div
+                    className="mt-10 flex flex-col items-center gap-3 text-center"
+                    role="alert"
+                  >
+                    <p className="text-sm text-muted-foreground">
+                      Could not load more books. Your current results are still
+                      here.
+                    </p>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => void books.fetchNextPage()}
+                    >
+                      Retry
+                    </Button>
+                  </div>
+                )}
+
+                {books.hasNextPage && !books.isFetchNextPageError && (
                   <div className="mt-12 flex justify-center">
                     <Button
                       type="button"

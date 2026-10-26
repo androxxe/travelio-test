@@ -47,6 +47,7 @@ export function SearchHero({
             aria-label="Search books"
             enterKeyHint="search"
             autoComplete="off"
+            maxLength={120}
             className="h-14 rounded-xl pl-11 pr-28 text-[0.95rem] shadow-[0_16px_35px_-30px_rgba(23,24,26,0.6)]"
           />
           <Button

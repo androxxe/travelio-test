@@ -49,8 +49,11 @@ export function useWishlistMutations() {
       return { previous };
     },
     onError: (error, _input, context) => {
-      if (context?.previous) {
-        queryClient.setQueryData(wishlistKeys.all, context.previous);
+      if (context) {
+        queryClient.setQueryData(
+          wishlistKeys.all,
+          context.previous ?? { items: [] },
+        );
       }
       toast.error(error.message);
     },
@@ -98,8 +101,11 @@ export function useWishlistMutations() {
       return { previous };
     },
     onError: (error, _volumeId, context) => {
-      if (context?.previous) {
-        queryClient.setQueryData(wishlistKeys.all, context.previous);
+      if (context) {
+        queryClient.setQueryData(
+          wishlistKeys.all,
+          context.previous ?? { items: [] },
+        );
       }
       toast.error(error.message);
     },

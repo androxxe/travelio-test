@@ -61,6 +61,18 @@ describe("BookCard", () => {
     expect(screen.getAllByText("Dune").length).toBeGreaterThan(1);
   });
 
+  it("labels fallback catalog books", () => {
+    render(
+      <BookCard
+        book={{ ...book, id: "demo-dune" }}
+        saved={false}
+        onToggle={() => undefined}
+      />,
+    );
+
+    expect(screen.getByText("Demo")).toBeInTheDocument();
+  });
+
   it("uses a placeholder when Google returns no thumbnail", () => {
     const { container } = render(
       <BookCard

@@ -50,6 +50,7 @@ export function WishlistPage() {
             : `${items.length} ${items.length === 1 ? "book" : "books"} saved`
         }
         isRefreshing={wishlist.isFetching && !wishlist.isPending}
+        refreshingLabel="Loading your shelf…"
       />
 
       <div className="mx-auto max-w-7xl px-5 py-10 sm:px-8">

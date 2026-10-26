@@ -37,5 +37,9 @@ export function useBooks(query: string) {
     ...result,
     books,
     totalItems: result.data?.pages[0]?.totalItems ?? 0,
+    notice:
+      result.data?.pages.find((page) => page.notice !== null)?.notice ?? null,
+    hasFallback:
+      result.data?.pages.some((page) => page.source === "fallback") ?? false,
   };
 }

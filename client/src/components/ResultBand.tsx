@@ -6,6 +6,7 @@ interface ResultBandProps {
   title: string;
   meta: string;
   isRefreshing?: boolean;
+  refreshingLabel?: string;
 }
 
 export function ResultBand({
@@ -14,6 +15,7 @@ export function ResultBand({
   title,
   meta,
   isRefreshing = false,
+  refreshingLabel = "Searching…",
 }: ResultBandProps) {
   return (
     <section
@@ -31,7 +33,7 @@ export function ResultBand({
           className="pb-1 text-[0.8rem] font-medium text-white/90"
           aria-live="polite"
         >
-          {isRefreshing ? "Searching…" : meta}
+          {isRefreshing ? refreshingLabel : meta}
         </p>
       </div>
     </section>

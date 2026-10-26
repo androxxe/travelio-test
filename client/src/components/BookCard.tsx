@@ -30,6 +30,7 @@ function CoverPlaceholder({ title }: { title: string }) {
 export function BookCard({ book, saved, pending = false, onToggle }: BookCardProps) {
   const [imageFailed, setImageFailed] = useState(false);
   const showCover = Boolean(book.thumbnail) && !imageFailed;
+  const isDemo = book.id.startsWith("demo-");
 
   return (
     <article className="group flex flex-col">
@@ -48,6 +49,12 @@ export function BookCard({ book, saved, pending = false, onToggle }: BookCardPro
             <CoverPlaceholder title={book.title} />
           )}
         </div>
+
+        {isDemo && (
+          <span className="absolute bottom-2 left-2 rounded-full bg-ink/85 px-2 py-0.5 text-[10px] font-medium text-white">
+            Demo
+          </span>
+        )}
 
         <button
           type="button"
