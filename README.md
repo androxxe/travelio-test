@@ -4,6 +4,7 @@ Book search and wishlist app built for the Travelio engineering test.
 
 Search Google Books, read the ratings as stars, and keep the books you care about on a wishlist that survives a reload — without creating an account.
 
+**Repository:** https://github.com/androxxe/travelio-test
 **Live demo:** https://travelio.andriosirait.com
 **API:** https://travelio-api.andriosirait.com/api
 **API contract:** [`spec/API.md`](spec/API.md) · **Design notes:** [`spec/DESIGN.md`](spec/DESIGN.md) · **Plan and decisions:** [`spec/PLAN.md`](spec/PLAN.md)

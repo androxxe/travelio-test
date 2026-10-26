@@ -29,7 +29,7 @@ The app applies migrations on boot, retries the database for 15 seconds, and exp
 ssh travelio-vps 'sudo install -d -o "$(id -u)" -g "$(id -g)" /opt/travelio-book-search'
 
 # 2. Clone the public repo
-ssh travelio-vps 'git clone https://github.com/androxxe/travelio-book-search.git /opt/travelio-book-search'
+ssh travelio-vps 'git clone https://github.com/androxxe/travelio-test.git /opt/travelio-book-search'
 
 # 3. Create the production env file (never commit it)
 ssh travelio-vps 'cd /opt/travelio-book-search && cp .env.production.example .env.production && chmod 600 .env.production'
