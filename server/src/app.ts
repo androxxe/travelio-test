@@ -86,7 +86,9 @@ export function createApp({
           }
         : false,
       crossOriginEmbedderPolicy: false,
-      hsts: config.isProduction ? undefined : false,
+      hsts: config.isProduction
+        ? { maxAge: 31_536_000, includeSubDomains: true }
+        : false,
     }),
   );
   app.use(compression());
