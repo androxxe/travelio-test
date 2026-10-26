@@ -146,7 +146,7 @@ pnpm test:e2e         # Playwright: search → save → reload → remove
 
 ## Deployment
 
-The image is self-contained:
+The exact production files live in `deploy/` and the full runbook is [`spec/DEPLOY.md`](spec/DEPLOY.md). The image is self-contained:
 
 ```bash
 docker build -t shelf .
@@ -208,6 +208,7 @@ server/                 Express API
   migrations/           SQL migrations
   tests/                Vitest + Supertest + Postgres integration
 e2e/                    Playwright + fixture Google server
+deploy/                 production compose, nginx vhosts, deploy script
 spec/                   Brief-derived plan, API contract, design notes
 ```
 
