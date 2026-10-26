@@ -49,7 +49,7 @@ Layers: route → repository → SQL. No service layer for the wishlist because 
 
 | Risk | Mitigation |
 |---|---|
-| Google quota (`429`) without an API key | `GOOGLE_BOOKS_API_KEY` env, 5-min cache, server-side 60 req/min limit, explicit 429 message with `Retry-After`, plus a clearly-labelled fallback catalog (`source: fallback`, banner in the UI) so the demo never dead-ends |
+| Google quota (`429`) without an API key | `GOOGLE_BOOKS_API_KEY` env, 5-min cache, server-side 60 req/min limit, explicit 429 message with `Retry-After`, plus a clearly-labelled fallback catalog (`source: fallback`, banner and `Demo` badges, page 1 only) so the demo never dead-ends |
 | Many books have no `averageRating` | `null` is preserved end to end; UI shows "No ratings yet" instead of fake zero stars |
 | Thumbnails are `http://` or 404 | Upgrade to `https://`, `referrerPolicy=no-referrer`, placeholder cover on error |
 | Google `totalItems` is approximate | `hasNextPage` requires a full page; load-more stops on a short page |
@@ -69,7 +69,7 @@ docker compose up -d --build
 curl -fsS http://localhost:3000/api/ready
 ```
 
-Integration tests run against a real Postgres when `DATABASE_URL` (or `TEST_DATABASE_URL`) is set, and skip otherwise.
+Integration tests run against a real Postgres when `TEST_DATABASE_URL` is set, and skip otherwise. They never fall back to `DATABASE_URL`, so `pnpm test` cannot write to a shared database.
 
 ## Out of scope
 

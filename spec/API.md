@@ -128,7 +128,7 @@ Normalisation applied per volume:
 
 `hasNextPage` is true only when the upstream returned a full page **and** `page * limit < totalItems`. Google's `totalItems` is approximate, so a short page is treated as the end.
 
-`source` is `google` for live results. When Google returns 429/5xx or times out and `FALLBACK_CATALOG_ENABLED=true` (default), the endpoint still returns `200` with `source: "fallback"`, a human-readable `notice`, and up to 24 curated books. The UI shows that notice above the grid, so demo data is never presented as a live Google result. Set the flag to `false` to surface the upstream error instead.
+`source` is `google` for live results. On **page 1 only**, when Google fails (429, 5xx, timeout, rejected key, or malformed payload) and `FALLBACK_CATALOG_ENABLED=true` (default), the endpoint still returns `200` with `source: "fallback"`, a human-readable `notice`, and up to 24 curated books. Later pages never mix catalog data into a live result set: they return the upstream error so load-more fails visibly. Every fallback item has an `id` starting with `demo-`, and the UI renders a `Demo` badge on the cover plus the notice above the grid, so demo data stays identifiable even after it is saved to the wishlist. Set the flag to `false` to surface upstream errors on page 1 as well.
 
 Responses are cached in-process for 5 minutes (max 100 entries) keyed by lowercased `q|page|limit`. This is a single-instance cache; a multi-instance deployment would move it to Redis.
 

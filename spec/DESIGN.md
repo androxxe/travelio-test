@@ -105,6 +105,7 @@ Motion is limited to: 200ms color transitions on controls, 500ms cover scale on 
 - Error panels use `role="alert"`; the band meta uses `aria-live="polite"`.
 - Cover images are decorative (`alt=""`) because the title is adjacent; the placeholder carries no actionable content.
 - No color-only state: saved hearts change shape (filled) as well as color.
+- Fallback catalog covers carry a `Demo` badge; the banner above the grid explains why, so demo data is never mistaken for a live Google result.
 
 ## What was deliberately avoided
 

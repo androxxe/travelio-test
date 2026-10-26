@@ -140,7 +140,7 @@ pnpm test:e2e         # Playwright: search → save → reload → remove
 
 - **Server unit tests** cover Google normalisation (http→https covers, missing authors/ratings, clamping, dedupe), pagination parameters, caching, retry, and 429/502 mapping.
 - **Route tests** use Supertest with injected fakes: validation, cookie issuance, visitor isolation, idempotent save/remove, malformed JSON, request ids, readiness.
-- **Repository tests** run against real Postgres when `DATABASE_URL` or `TEST_DATABASE_URL` is set, and cover the unique constraint, snapshot preservation, and removal.
+- **Repository tests** run against real Postgres only when `TEST_DATABASE_URL` is set, and cover the unique constraint, snapshot preservation, and removal. `pnpm test` stays database-free by default and never writes to `DATABASE_URL`.
 - **Client tests** cover fractional stars/ARIA, count formatting, heart state, and cover fallbacks.
 - **E2E** boots the real API with a fixture Google server, so it never depends on network access or quota.
 
