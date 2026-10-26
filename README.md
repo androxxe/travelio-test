@@ -5,6 +5,7 @@ Book search and wishlist app built for the Travelio engineering test.
 Search Google Books, read the ratings as stars, and keep the books you care about on a wishlist that survives a reload — without creating an account.
 
 **Live demo:** https://travelio.andriosirait.com
+**API:** https://travelio-api.andriosirait.com/api
 **API contract:** [`spec/API.md`](spec/API.md) · **Design notes:** [`spec/DESIGN.md`](spec/DESIGN.md) · **Plan and decisions:** [`spec/PLAN.md`](spec/PLAN.md)
 
 ## Screenshots
@@ -159,7 +160,7 @@ docker run -d --name shelf -p 127.0.0.1:3100:3000 \
   shelf
 ```
 
-Put it behind a TLS-terminating reverse proxy and keep the app port bound to `127.0.0.1`. With nginx:
+Put it behind a TLS-terminating reverse proxy and keep the app port bound to `127.0.0.1`. The production host serves the app and API on the canonical origin; `travelio-api.andriosirait.com` is an API-only vhost on the same container (its root redirects to the app). With nginx:
 
 ```nginx
 server {

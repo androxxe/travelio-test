@@ -1,6 +1,11 @@
 # API contract
 
 Base path: `/api` (same origin in production, proxied to `http://localhost:3000` in development).
+
+Production origins:
+
+- App + API: `https://travelio.andriosirait.com/api`
+- API-only hostname: `https://travelio-api.andriosirait.com/api` (same container; root redirects to the app)
 All responses are JSON except `204 No Content`. Request bodies are limited to 16 KB.
 
 ## Conventions
