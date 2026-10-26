@@ -1,7 +1,7 @@
 # Deployment runbook
 
 Target: **https://travelio.andriosirait.com** (app + API, same origin).
-`travelio-api.andriosirait.com` exposes **`/api/*` only** on the same container; its root 301s to the canonical origin. The SPA keeps using the same-origin API, so the httpOnly wishlist cookie needs no CORS or `SameSite=None` configuration. The API hostname is for curl/Postman/integrations.
+`travelio-api.andriosirait.com` exposes **`/api/*` only** on the same container; its root returns a JSON descriptor; non-API paths return 404. The SPA keeps using the same-origin API, so the httpOnly wishlist cookie needs no CORS or `SameSite=None` configuration. The API hostname is for curl/Postman/integrations.
 
 ## Topology
 

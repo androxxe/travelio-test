@@ -161,7 +161,7 @@ docker run -d --name shelf -p 127.0.0.1:3100:3000 \
   shelf
 ```
 
-Put it behind a TLS-terminating reverse proxy and keep the app port bound to `127.0.0.1`. The production host serves the app and API on the canonical origin; `travelio-api.andriosirait.com` is an API-only vhost on the same container (its root redirects to the app). With nginx:
+Put it behind a TLS-terminating reverse proxy and keep the app port bound to `127.0.0.1`. The production host serves the app and API on the canonical origin; `travelio-api.andriosirait.com` is an API-only vhost on the same container (its root returns a small JSON descriptor and non-API paths return 404). With nginx:
 
 ```nginx
 server {
