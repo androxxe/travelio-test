@@ -182,7 +182,16 @@ export function createApp({
       );
 
       app.use((request, response, next) => {
-        if (request.method !== "GET" || request.path.startsWith("/api")) {
+        if (request.method !== "GET" && request.method !== "HEAD") {
+          next();
+          return;
+        }
+        if (request.path.startsWith("/api")) {
+          next();
+          return;
+        }
+        // Do not turn probes like /.env or /server.js into a 200 index.html.
+        if (/\.[a-zA-Z0-9]+$/.test(request.path)) {
           next();
           return;
         }
